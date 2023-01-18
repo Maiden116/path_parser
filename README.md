@@ -12,7 +12,7 @@ npm run start
 
 to parse a url
 
-'''
+```
 curl --location --request POST 'localhost:3000/parsepath' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -20,4 +20,4 @@ curl --location --request POST 'localhost:3000/parsepath' \
     "url_format" : "/:version/api/:collection/:id"
 }
 '
-'''
+```
