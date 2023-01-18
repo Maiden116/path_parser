@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sing-in Demo</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="550531852393-nfp9v02eo4dbodegsedp6jikvjeim17v.apps.googleusercontent.com">
+</head>
+
+<body>
+    <!-- <img src="http://localhost:3000/image/category/1znu1jo.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJBRE1JTl9ST0xFIiwic3RhdHVzIjp0cnVlLCJnb29nbGUiOnRydWUsIl9pZCI6IjVmNTk3OTRiY2U3ZTFlNGFkY2E5ZGYwNCIsIm5hbWUiOiJFbW1hbnVlbCBMZWl2YSIsImVtYWlsIjoibWFpZGVuMTE2bHRoZUBnbWFpbC5jb20iLCJfX3YiOjB9LCJpYXQiOjE1OTk3NzAyNjksImV4cCI6MTU5OTk0MzA2OX0.y0NDwDNQhhgTwnROiC-3WLnv8IhfjUUk2QsqrnmTn5w" alt="">  -->
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <a href="#" onclick="signOut();">Sign out</a>
+    <script>
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+</body>
+<script>
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        var id_token = googleUser.getAuthResponse().id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/google');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send('idtoken=' + id_token);
+    }
+</script>
+
+</html>
