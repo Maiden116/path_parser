@@ -6,19 +6,19 @@ appRoutes.post('/parsepath' , (req, res) => {
     const body = req.body;
     const urlFormat = body.url_format;
     const url = body.url;
-    let indexes = {};
+    
 
     const [urlSplited, urlParameters ] = url.split('?');
     const urlParametersSplited = urlParameters.split('&');
     const urlIdexesSplited = urlSplited.split('/');
 
     const splitedIndexes = urlFormat.split('/');
-    for (let index = 1; index < splitedIndexes.length; index++) {
-        const element = splitedIndexes[index];
-        if(element.includes(':')) {
-            indexes[element.replace(":","")] = urlIdexesSplited[index];
+    const indexes = splitedIndexes.reduce((accumulator, key, index) => {
+        if(key.includes(':')){
+            return {...accumulator, [key.replace(':','')]: urlIdexesSplited[index]};
         }
-    }
+        return {...accumulator}
+      }, {});
 
     for (let index = 0; index < urlParametersSplited.length; index++) {
         const element = urlParametersSplited[index];
