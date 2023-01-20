@@ -1,6 +1,18 @@
 import express from 'express';
 const appRoutes = express()
 
+const cleanIndex = (index) => index.replace(':','');
+const isIndex = (index) => index.includes(':');
+
+const getIndexes = (indexes, values ) => {
+     return indexes.reduce((accumulator, key, index) => {
+        if(isIndex(key)){
+            return {...accumulator, [cleanIndex(key)]: values[index]};
+        }
+        return {...accumulator}
+      }, {});
+}
+
 appRoutes.post('/parsepath' , (req, res) => {
 
     const body = req.body;
@@ -13,12 +25,7 @@ appRoutes.post('/parsepath' , (req, res) => {
     const urlIdexesSplited = urlSplited.split('/');
 
     const splitedIndexes = urlFormat.split('/');
-    const indexes = splitedIndexes.reduce((accumulator, key, index) => {
-        if(key.includes(':')){
-            return {...accumulator, [key.replace(':','')]: urlIdexesSplited[index]};
-        }
-        return {...accumulator}
-      }, {});
+    const indexes = getIndexes(splitedIndexes,urlIdexesSplited);
 
     for (let index = 0; index < urlParametersSplited.length; index++) {
         const element = urlParametersSplited[index];
