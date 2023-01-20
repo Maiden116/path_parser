@@ -8,13 +8,11 @@ appRoutes.post('/parsepath' , (req, res) => {
     const url = body.url;
     let indexes = {};
 
-    const urlSplited = url.split('?')[0];
-    const urlParameters = url.split('?')[1];
+    const [urlSplited, urlParameters ] = url.split('?');
     const urlParametersSplited = urlParameters.split('&');
     const urlIdexesSplited = urlSplited.split('/');
 
-    const urlFormatSplited = urlFormat.split('?')[0];
-    const splitedIndexes = urlFormatSplited.split('/');
+    const splitedIndexes = urlFormat.split('/');
     for (let index = 1; index < splitedIndexes.length; index++) {
         const element = splitedIndexes[index];
         if(element.includes(':')) {
@@ -24,7 +22,9 @@ appRoutes.post('/parsepath' , (req, res) => {
 
     for (let index = 0; index < urlParametersSplited.length; index++) {
         const element = urlParametersSplited[index];
-        indexes[element.split("=")[0]] = element.split("=")[1];
+        const elementSplited = element.split("=")
+        const [key, value] = elementSplited
+        indexes[key] = value;
     }
 
     res.send(
