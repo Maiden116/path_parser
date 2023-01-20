@@ -13,13 +13,14 @@ const getIndexes = (indexes, values ) => {
       }, {});
 }
 
+const splitParam = (param)=> param.split("=");
+
 appRoutes.post('/parsepath' , (req, res) => {
 
     const body = req.body;
     const urlFormat = body.url_format;
     const url = body.url;
     
-
     const [urlSplited, urlParameters ] = url.split('?');
     const urlParametersSplited = urlParameters.split('&');
     const urlIdexesSplited = urlSplited.split('/');
@@ -27,12 +28,10 @@ appRoutes.post('/parsepath' , (req, res) => {
     const splitedIndexes = urlFormat.split('/');
     const indexes = getIndexes(splitedIndexes,urlIdexesSplited);
 
-    for (let index = 0; index < urlParametersSplited.length; index++) {
-        const element = urlParametersSplited[index];
-        const elementSplited = element.split("=")
-        const [key, value] = elementSplited
+    urlParametersSplited.forEach((element, index) => {        
+        const [key, value] = splitParam(urlParametersSplited[index]);
         indexes[key] = value;
-    }
+    })
 
     res.send(
         indexes
